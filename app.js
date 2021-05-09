@@ -1,3 +1,4 @@
+var PORT = process.env.PORT || 3000;
 const path = require('path');
 
 const express = require('express');
@@ -21,4 +22,4 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-app.listen(3000);
+app.listen(PORT);
