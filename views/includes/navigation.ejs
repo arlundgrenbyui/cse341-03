@@ -38,9 +38,9 @@
                 </li>
                 <% } else { %>
                 <li class="main-header__item">
-                    <form action="/logout" method="post">
+                    <form class="form-control" action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit">Logout</button>
+                        <button class="logout-btn" type="submit">Logout</button>
                     </form>
                 </li>
                 <% } %>
@@ -48,6 +48,13 @@
         </ul>
     </nav>
 </header>
+
+<div class="guitar-banner">
+    <div class="store-name">
+        <h1>Guitars ++</h1>
+        <p>The Best Guitars Around</p>
+    </div>
+</div>
 
 <nav class="mobile-nav">
     <ul class="mobile-nav__item-list">
@@ -82,9 +89,9 @@
             </li>
         <% } else { %>
             <li class="mobile-nav__item">
-                <form action="/logout" method="post">
+                <form class="form-control" action="/logout" method="post">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit">Logout</button>
+                    <button class="logout-btn" type="submit">Logout</button>
                 </form>
             </li>
         <% } %>

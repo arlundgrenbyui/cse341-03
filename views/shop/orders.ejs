@@ -17,6 +17,12 @@
                                     <li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>)</li>
                                 <% }); %>
                             </ul>
+                            <hr>
+                            <form action="/orders-cancel" method="POST">
+                                <input type="hidden" value="<%= order._id %>" name="orderId">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button class="btn" type="submit">Cancel Order</button>
+                            </form>
                         </li>
                     <% }); %>
                 </ul>

@@ -3,12 +3,16 @@
     max-width: 90%;
     margin: auto;
     display: block;
+    background-color: white;
+    box-shadow: 0 2px 8px rgb(0, 0, 0);
+    padding: 1rem;
 }
 
 .product-item {
     width: 20rem;
     max-width: 95%;
     margin: 1rem;
+    padding: .25rem;
 }
 
 .product__title {

@@ -13,8 +13,8 @@ const flash = require('connect-flash')
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
-const MONGODB_URL = process.env.MONGODB_URL || 'mongodb+srv://lundgren:LysbSZeSgHnOfLFV@cluster0.7jx5i.mongodb.net/shop';
-// const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://lundgren:LysbSZeSgHnOfLFV@cse341cluster-3dwlw.mongodb.net/shop"; // FOR HEROKU
+// const MONGODB_URL = process.env.MONGODB_URL || 'mongodb+srv://lundgren:LysbSZeSgHnOfLFV@cluster0.7jx5i.mongodb.net/shop';
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://lundgren:LysbSZeSgHnOfLFV@cse341cluster-3dwlw.mongodb.net/shop"; // FOR HEROKU
 
 const app = express();
 const store = new MongoDBStore({
@@ -44,28 +44,38 @@ app.use(csrfProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedin;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
+app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
     }
     User.findById(req.session.user._id)
         .then(user => {
+            if (!user) {
+                return next();
+            }
             req.user = user;
             next();
         })
-        .catch(err => console.log(err));
-})
-
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedin;
-    res.locals.csrfToken = req.csrfToken();
-    next();
-})
+        .catch(err => {
+            next(new Error(err));
+        });
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+app.get('/500', errorController.get500);
 app.use(errorController.get404);
+app.use((error, req, res, next) => {
+    res.redirect('/500');
+});
+
 
 const corsOptions = {
     origin: "https://cse-341-prove-03-lundgren.herokuapp.com/",
